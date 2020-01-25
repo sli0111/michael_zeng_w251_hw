@@ -1,0 +1,1 @@
+python /home/vsi_receiver.py

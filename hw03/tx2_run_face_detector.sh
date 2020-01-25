@@ -1,0 +1,1 @@
+python /home/tx2_face_detector.py
