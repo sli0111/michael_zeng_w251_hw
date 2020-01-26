@@ -1,6 +1,7 @@
 # Homework 4
 
 ## Submission
+### ConvnetJS MNIST demo
 * Name all the layers in the network, make sure you understand what they do.
     - `layer_defs.push({type:'input', out_sx:24, out_sy:24, out_depth:1});`
 
@@ -45,6 +46,10 @@
 * What is the best accuracy you can achieve? Are you over 99%? 99.5%?
     
     The best validation accuray I saw is 99%. 
+
+### Build your own model in Keras
+
+    Please see the notebook downloaded as `w251_homework04.html`.
 
 ## On Cloud
 
