@@ -49,7 +49,7 @@
 
 ### Build your own model in Keras
 
-    Please see the notebook downloaded as `w251_homework04.html`.
+Please see the notebook downloaded as `w251_homework04.html`.
 
 ## On Cloud
 
