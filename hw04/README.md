@@ -37,15 +37,15 @@
 
 * Add one more conv layer. Does it help with accuracy?
 
-    Adding another conv layer it makes the difference in accuracy bigger between the training and validation set. 
+    Adding another conv layer makes the difference in accuracy bigger between the training and validation set. 
 
 * Increase the batch size. What impact does it have?
 
-    Increasing the batch size makes the training slower, also the gradient seem to be smaller therefore the loss goes down slower. 
+    Increasing the batch size makes the training slower, also the gradient seem to be smaller therefore the loss goes down more slowly. 
 
 * What is the best accuracy you can achieve? Are you over 99%? 99.5%?
     
-    The best validation accuray I saw is 99%. 
+    The best validation accuray I saw is 99%. The website doesn't seem to show accuracy to the first decimal digit. 
 
 ### Build your own model in Keras
 
