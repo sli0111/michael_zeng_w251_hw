@@ -1,0 +1,10 @@
+{
+    "cache_key": "eyJhcmd1bWVudHMiOlsiLS1sb2dkaXIiLCJ0Zl9maWxlcy90cmFpbmluZ19zdW1tYXJpZXMiXSwiY29uZmlndXJlX2t3YXJncyI6e30sIndvcmtpbmdfZGlyZWN0b3J5IjoiL3RtcC90ZW5zb3JmbG93LWZvci1wb2V0cy0yIn0=",
+    "db": "",
+    "logdir": "tf_files/training_summaries",
+    "path_prefix": "",
+    "pid": 32,
+    "port": 6006,
+    "start_time": 1580683703,
+    "version": "1.15.0"
+}

@@ -1,3 +1,51 @@
+# TF2
+* Run the container:
+    ```
+    docker run --privileged --rm \
+    -p 8888:8888 \
+    -v "$(pwd)":/notebooks/ \
+    --memory-swap -1 \
+    --memory-swappiness 100 \
+    -d w251/keras:dev-tx2-4.3_b132
+    ```
+
+# TF1
+* Run the container: 
+
+    `docker run --privileged --rm -p 6006:6006 -v "$(pwd)":/tmp/ --memory-swap -1 --memory-swappiness 100 -ti w251/tensorflow:dev-tx2-4.3_b132-tf1 bash`
+* Clone git repo:
+
+    `git clone https://github.com/googlecodelabs/tensorflow-for-poets-2`
+    `cd tensorflow-for-poets-2`
+* Download training image
+    `curl http://download.tensorflow.org/example_images/flower_photos.tgz \    | tar xz -C tf_files`
+
+* start TensorBoard
+    `tensorboard --logdir tf_files/training_summaries &`
+
+* Run the training
+    `docker exec -i -t trusting_stallman bash`
+    ```
+    python3 -m scripts.retrain \
+    --bottleneck_dir=tf_files/bottlenecks \
+    --how_many_training_steps=4000 \
+    --model_dir=tf_files/models/ \
+    --summaries_dir=tf_files/training_summaries/mobilenet_0.50_224 \
+    --output_graph=tf_files/retrained_graph.pb \
+    --output_labels=tf_files/retrained_labels.txt \
+    --architecture=mobilenet_0.50_224 \
+    --image_dir=tf_files/flower_photos
+    ```
+
+* Classifying an image
+    ```
+    python3 -m scripts.label_image \
+    --graph=tf_files/retrained_graph.pb  \
+    --image=tf_files/flower_photos/roses/2414954629_3708a1a04d.jpg 
+    ```
+
+# Submission
+
 1. What is TensorFlow? Which company is the leading contributor to TensorFlow?
 2. What is TensorRT? How is it different from TensorFlow?
 3. What is ImageNet? How many images does it contain? How many classes?
