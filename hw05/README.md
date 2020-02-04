@@ -4,8 +4,9 @@
     docker run --privileged --rm \
     -p 8888:8888 \
     -v "$(pwd)":/notebooks/ \
-    --memory-swap -1 \
-    --memory-swappiness 100 \
+    --memory 7G \
+    --memory-swap 30G \
+    --memory-swappiness 50 \
     -d w251/keras:dev-tx2-4.3_b132
     ```
 
@@ -28,9 +29,9 @@
     ```
     python3 -m scripts.retrain \
     --bottleneck_dir=tf_files/bottlenecks \
-    --how_many_training_steps=400 \
+    --how_many_training_steps=1000 \
     --model_dir=tf_files/models/ \
-    --learning_rate=0.005 \
+    --learning_rate=0.1 \
     --summaries_dir=tf_files/training_summaries/mobilenet_0.50_224 \
     --output_graph=tf_files/retrained_graph.pb \
     --output_labels=tf_files/retrained_labels.txt \
@@ -81,21 +82,72 @@
 
 8. How does a low --learning_rate (step 7 of TF1) value (like 0.005) affect the precision? How much longer does training take?
 
-    This make the training slower but not a whole lot to show for mere 400 steps. 400 steps with 0.005 took roughly 120 secs and had a  final accuracy of 89.8%, while with 0.01 took about 110 secs and had a final accuracy of 89.1%.
+    This make the training slower but not a whole lot to show for mere 1000 steps. 1000 steps with 0.005 took roughly 245 secs and had a final accuracy of 91.4%, while with 0.01 took about 237 secs and had a final accuracy of 89.5%.
 
 9. How about a --learning_rate (step 7 of TF1) of 1.0? Is the precision still good enough to produce a usable graph?
 
-    The training took about 105 sec, which is similar to learning rate of 0.01 but it is mostly because the number of steps is too small. The final accuracy is 86.5%, it is still somewhat usable, yet it also has bigger variance: I repreated the experiment a few time and saw wide range of final accuracies. 
+    The training took about 228 sec, which is similar compared to learning rate of 0.01 but it is mostly because the number of steps is too small. The final accuracy is 88.1%, it is still somewhat usable, yet it also has bigger variance: I repreated the experiment a few time and saw wide range of final accuracies. 
 
 10. For step 8, you can use any images you like. Pictures of food, people, or animals work well. You can even use ImageNet images. How accurate was your model?
 
+    I used the downloader from `https://github.com/mf1024/ImageNet-Datasets-Downloader.git`
+    ```
+    python ./downloader.py \
+    -data_root /tmp/tensorflow-for-poets-2/tf_files/new_photos/ \
+    -number_of_classes 40 \
+    -images_per_class 100
+    ```
+    I downloaded 100 images each for 40 random classes
+    `python3 ./downloader.py -data_root /tmp/tensorflow-for-poets-2/tf_files -number_of_classes 5 -images_per_class 100`
+    And trained the model 1000 times with learning rate 0.01, and has a final prediction accuracy of 85.4%. 
+    ```
+    python3 -m scripts.retrain \
+    --bottleneck_dir=tf_files/bottlenecks \
+    --how_many_training_steps=1000 \
+    --model_dir=tf_files/models/ \
+    --learning_rate=0.01 \
+    --summaries_dir=tf_files/training_summaries/mobilenet_0.50_224 \
+    --output_graph=tf_files/retrained_graph.pb \
+    --output_labels=tf_files/retrained_labels.txt \
+    --architecture=mobilenet_0.50_224 \
+    --image_dir=tf_files/imagenet_images
+    ```
+
 11. Were you able to train it using a few images, or did you need a lot?
+
+    I could just use a few images, like 5 classes of 100 each. The accuracy is 100%, which is implausibly high. I think it is a problem on the ratio beween number of class vs number of images per class. 5 classes of 100 each is too easy for the algorithm. 
 
 12. Run the TF1 script on the CPU (see instructions above) How does the training time compare to the default network training (section 4)? Why?
     ```
     docker run --rm -p 6006:6006 -v "$(pwd)":/tmp/ --memory-swap -1 --memory-swappiness 100 -ti w251/tensorflow:dev-tx2-4.3_b132-tf1 bash
     ```
     Running with learning rate 0.01 for 400 steps took 130 secs while `tegrastats` showing `GR3D_FREQ` of 0%. GPU is better suited for the operations involved in the neural network training. 
+    
 13. Try the training again, but this time do export ARCHITECTURE="inception_v3" Are CPU and GPU training times different?
 
+    ```
+    time python3  -m scripts.retrain     \
+    --bottleneck_dir=tf_files/bottlenecks     \
+    --how_many_training_steps=1000     \
+    --model_dir=tf_files/models/     \
+    --learning_rate=0.01     \
+    --summaries_dir=tf_files/training_summaries/inception_v3     \
+    --output_graph=tf_files/retrained_graph.pb     \
+    --output_labels=tf_files/retrained_labels.txt     \
+    --architecture=inception_v3     \
+    --image_dir=tf_files/flower_photos
+    ```
+    GPU time: `real    6m13.871s    user    5m56.500s   sys     0m33.996s`
+    CPU time: `real    6m5.179s     user    5m41.568s   sys     0m28.564s`
+
 14. Given the hints under the notes section, if we trained Inception_v3, what do we need to pass to replace ??? below to the label_image script? Can we also glean the answer from examining TensorBoard?
+    
+    I added the following chunk to label_image.py, but I don't think we need it for Inception_v3 to work. 
+    ```
+    +  # W251 insert
+    +  config = tf.ConfigProto()
+    +  config.gpu_options.allow_growth = True
+    +
+    +  # with tf.Session(graph=graph) as sess:
+    +  with tf.Session(graph=graph, config=config) as sess:
+    ```
