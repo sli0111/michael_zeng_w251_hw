@@ -1,5 +1,21 @@
 # Homework 6
 
+## Submission
+
+* P100
+	- Order VSI
+	
+		`ibmcloud sl vs create --datacenter=wdc07  --hostname=p100a --domain=W251-zengm71.cloud --image 3651552 --billing=hourly  --network 1000 --key=1545088 --flavor AC1_8X60X25 --san`
+	
+		Note that the VSI flavor is a bit different than what is on the repo README.
+
+	- Run Docker 
+
+		`nvidia-docker run --rm --name hw06 -p 8888:8888 -d w251/hw06:x86-64`
+
+	- Notebook
+		`BERT_classifying_toxicity_michael_zeng_p100.ipynb`
+
 **Note this is a graded homework.**
 1. Read the Google Cloud Product Overview on the [TPUs](https://cloud.google.com/tpu/)  
 2. Read the primer on [Bert](https://github.com/google-research/bert)  
