@@ -2,6 +2,8 @@
 
 ## Submission
 
+Please see my submission in notebook `BERT_classifying_toxicity_michael_zeng_v100.ipynb`. 
+
 * P100
 	- Order VSI
 	
@@ -15,6 +17,24 @@
 
 	- Notebook
 		`BERT_classifying_toxicity_michael_zeng_p100.ipynb`
+
+* V100
+	- Order VSI
+
+		`ibmcloud sl vs create --datacenter=lon04 --hostname=v100a --domain=W251-zengm71.cloud --image=2263543 --billing=hourly  --network 1000 --key=1545088 --flavor AC2_8X60X100 --san`
+
+	- Run Docker 
+
+		`nvidia-docker run --rm --name hw06 -p 8888:8888 -d w251/hw06:x86-64`
+
+	- Notebook
+		`BERT_classifying_toxicity_michael_zeng_v100.ipynb`
+
+* Comments:
+
+	V100 is a lot faster than V100, therefore the full dataset of 1M training + .5M validation is run on V100 only. As a result, `BERT_classifying_toxicity_michael_zeng_v100.ipynb` is the notebook for finanl submission. In this notebook, 1 EPOCH AUC accuracy is 96.90% for the V100. In part 8, where I took the model trained with 1 EPOCH and continued the training for another 2, the accuracy goes up slightly to 96.98%. 
+	
+## Original instructions. 
 
 **Note this is a graded homework.**
 1. Read the Google Cloud Product Overview on the [TPUs](https://cloud.google.com/tpu/)  
