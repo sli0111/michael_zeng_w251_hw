@@ -1,3 +1,7 @@
+<<<<<<< HEAD
 *.pb
+=======
+hw06/data/*
+>>>>>>> 7f7bec7d6c1615f42f8ac8062e82f90d1aa1b432
 *.bin
 hw05/tensorflow-for-poets-2/*

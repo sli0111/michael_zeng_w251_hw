@@ -4,6 +4,8 @@
 
 Please see my submission in notebook `BERT_classifying_toxicity_michael_zeng_v100.ipynb`. 
 
+The evaluation kernel can be found at https://www.kaggle.com/kernels/scriptcontent/28326965/notebook, I got prive score of 0.93539.
+
 * P100
 	- Order VSI
 	
