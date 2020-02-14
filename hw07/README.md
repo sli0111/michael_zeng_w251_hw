@@ -2,7 +2,7 @@
 
 ## Submission
 
-# Docker: we are using the image from lab5 `docker run --privileged --rm -v "$(pwd)":/notebooks/tf_trt_models/hw07 -p 8888:8888 -d w251/tensorrtlab05:dev-tx2-4.3_b132`
+* Docker: we are using the image from lab5 `docker run --privileged --rm -v "$(pwd)":/notebooks/tf_trt_models/hw07 -p 8888:8888 -d w251/tensorrtlab05:dev-tx2-4.3_b132`
 
 ### Overview
 The objective of this homework is simple: modify the processing pipeline that you implemented in 
