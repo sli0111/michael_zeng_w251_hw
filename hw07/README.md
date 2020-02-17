@@ -4,6 +4,8 @@
 
 * Docker: we are using the image from lab5 `docker run --privileged --rm -v "$(pwd)":/notebooks/tf_trt_models/hw07 -p 8888:8888 -d w251/tensorrtlab05:dev-tx2-4.3_b132`
 
+* Please see the example notebook at https://github.com/zengm71/michael_zeng_w251_hw/blob/master/hw07/hw07_michael_zeng.ipynb for sample code for face detection. 
+
 * Please see images at http://251hw07mz.s3.us-south.cloud-object-storage.appdomain.cloud/face_<picture_number>.png, the `picture_number` can be from 1 to 10.
 
 ## Answers:
