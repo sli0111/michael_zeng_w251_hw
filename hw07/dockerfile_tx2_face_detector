@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM w251/tensorrtlab05:dev-tx2-4.3_b132
 
 # build this: e.g docker build -t motion -f Dockerfile.opencv-mqtt
 # to run this container, do:
@@ -12,7 +12,8 @@ RUN apt update
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt install -y python-opencv python-pip vim-tiny mosquitto-clients libopencv-dev
+RUN apt install -y python3-opencv python-pip vim-tiny mosquitto-clients libopencv-dev
+
 RUN pip install paho-mqtt
 
-WORKDIR /
+RUN wget https://github.com/yeephycho/tensorflow-face-detection/blob/master/model/frozen_inference_graph_face.pb?raw=true -O 'data/frozen_inference_graph_face.pb'

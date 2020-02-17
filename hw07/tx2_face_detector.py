@@ -23,12 +23,6 @@ def on_message(client, userdata, msg):
   except:
     print("Unexpected error:", sys.exc_info()[0])
 
-
-local_mqttclient = mqtt.Client()
-local_mqttclient.on_connect = on_connect_local
-local_mqttclient.connect(LOCAL_MQTT_HOST, LOCAL_MQTT_PORT, 60)
-local_mqttclient.on_message = on_message
-
 # set up tensorflow ================================================================================
 import os
 import matplotlib.pyplot as plt
@@ -60,7 +54,7 @@ trt_graph = trt.create_inference_graph(
     precision_mode='FP16',
     minimum_segment_size=50
 )
-
+print("graph created")
 tf_config = tf.ConfigProto()
 tf_config.gpu_options.allow_growth = True
 
@@ -82,8 +76,13 @@ tf_num_detections = tf_sess.graph.get_tensor_by_name('num_detections:0')
 
 # start capturing faces ============================================================================
 # 1 should correspond to /dev/video1 , your USB camera. The 0 is reserved for the TX2 onboard camera
+print("start detecting faces")
 cap = cv2.VideoCapture(1)
 
+local_mqttclient = mqtt.Client()
+local_mqttclient.on_connect = on_connect_local
+local_mqttclient.connect(LOCAL_MQTT_HOST, LOCAL_MQTT_PORT, 60)
+local_mqttclient.on_message = on_message
 i = 0
 while(True):
   # Capture frame-by-frame
@@ -109,8 +108,8 @@ while(True):
 
   rc,png = cv2.imencode('.png', image)
   msg = png.tobytes()
-
-  # send it to broker
+  
+  # send it to brokers
   local_mqttclient.publish(LOCAL_MQTT_TOPIC, payload = str(i) + msg, qos = 0, retain = False)
   # let's try keep track of faces detec
   i += 1

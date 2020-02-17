@@ -30,24 +30,24 @@
 
     * Spin up container and run `tx2_forwarder.py`
 
-        `sudo docker run --rm --name mqtt_forwarder --network hw07 -v ~/Documents/W251/v2/week03/hw_mz/:/home/ -ti mqtt_forwarder /bin/sh /home/tx2_run_forwarder.sh`
+        `sudo docker run --rm --name mqtt_forwarder --network hw07 -v /home/zengm71/Documents/W251/michael_zeng_w251_hw/hw07/:/home/ -ti mqtt_forwarder /bin/sh /home/tx2_run_forwarder.sh`
 
 4. OpenCV face detector
 
     * Build the image
 
-        `sudo docker build -t face_detector -f dockerfile_tx2_face_detector .`
+        `sudo docker build -t face_detector07 -f dockerfile_tx2_face_detector .`
 
     * Spin up the container and run `tx2_face_detector.py`
 
-        `sudo docker run --rm --privileged -e DISPLAY --name face_detector --network hw03 -v ~/Documents/W251/v2/week03/hw_mz/:/home/ -ti face_detector /bin/bash /home/tx2_run_face_detector.sh`
+        `sudo docker run --rm --privileged -e DISPLAY --name face_detector --network hw07 -v /home/zengm71/Documents/W251/michael_zeng_w251_hw/hw07/:/home/ -ti face_detector /bin/bash /home/tx2_run_face_detector.sh`
 
     * Note that in `tx2_face_detector.py` I added in a timeout of 10 seconds as well as a single digit counter to keep track of faces/pictures. These were used just so that I don't overwhelm the output with tons of images. Tests have been done with these two restrictions removed and it still works nicely. 
 
 ### On VSI
 
 1. Create a bridge network
-`sudo docker network create --driver bridge hw03`
+`sudo docker network create --driver bridge hw07`
 
 2. MQTT broker
 
@@ -57,7 +57,7 @@
 
     * Spin up container and establish broker
 
-        `sudo docker run --rm --name mqtt_broker --network hw03 -p 1883:1883 -ti mqtt_broker /usr/sbin/mosquitto`
+        `sudo docker run --rm --name mqtt_broker --network hw07 -p 1883:1883 -ti mqtt_broker /usr/sbin/mosquitto`
 
 3. MQTT receiver
 

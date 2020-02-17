@@ -1,7 +1,7 @@
 import paho.mqtt.client as mqtt
 
 # start MQTT client remote ================================================================================
-REMOTE_MQTT_HOST="52.117.197.8"
+REMOTE_MQTT_HOST="169.45.65.213"
 REMOTE_MQTT_PORT=1883
 REMOTE_MQTT_TOPIC="homework3"
 
