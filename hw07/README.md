@@ -4,6 +4,26 @@
 
 * Docker: we are using the image from lab5 `docker run --privileged --rm -v "$(pwd)":/notebooks/tf_trt_models/hw07 -p 8888:8888 -d w251/tensorrtlab05:dev-tx2-4.3_b132`
 
+* Please see images at http://251hw07mz.s3.us-south.cloud-object-storage.appdomain.cloud/face_<picture_number>.png, the `picture_number` can be from 1 to 10.
+
+## Answers:
+
+* Describe your solution in detail.  What neural network did you use? What dataset was it trained on? What accuracy does it achieve?
+
+    I used the model from https://github.com/yeephycho/tensorflow-face-detection. I didn't retrain it, but I believe it is originally trained on the http://shuoyang1213.me/WIDERFACE/ dataset.
+
+* Does it achieve reasonable accuracy in your empirical tests? Would you use this solution to develop a robust, production-grade system?
+    
+    It tests pretty well, recognizes multiple faces
+
+* What framerate does this method achieve on the Jetson? Where is the bottleneck?
+    
+    The framerate is a bit low, it about 12 frames a second. I think the bottleneck is I didn't successfully resize the image: the image I sent in is (480, 640, 3).
+
+* Which is a better quality detector: the OpenCV or yours?
+
+    I think this one tests equally well as the OpenCV detector, especially in the sense that the false positve rate is pretty low.
+
 ## Pipeline 
 ### On Jetson
 
@@ -74,23 +94,6 @@
 4. Note on S3 buckets
 
     The newer version of S3 buckets support public access much easier. `s3cmd` still works with the newer buckets, but one needs to create new credential with HMAC checked to see the access_key and secret_access_key.
-
-## Answers:
-* Describe your solution in detail.  What neural network did you use? What dataset was it trained on? What accuracy does it achieve?
-
-    I used the model from https://github.com/yeephycho/tensorflow-face-detection. I didn't retrain it, but I believe it is originally trained on the http://shuoyang1213.me/WIDERFACE/ dataset. 
-
-* Does it achieve reasonable accuracy in your empirical tests? Would you use this solution to develop a robust, production-grade system?
-    
-    It tests pretty well, recognizes multiple faces
-
-* What framerate does this method achieve on the Jetson? Where is the bottleneck?
-    
-    The framerate is a bit low, it about 12 frames a second. I think the bottleneck is I didn't successfully resize the image: the image I sent in is (480, 640, 3).
-
-* Which is a better quality detector: the OpenCV or yours?
-
-    I think this one tests equally well as the OpenCV detector, especially in the sense that the false positve rate is pretty low.
 
 ## Original README
 ### Overview
