@@ -2,20 +2,25 @@ import paho.mqtt.client as mqtt
 from cv2 import imdecode, IMREAD_COLOR, imwrite
 import numpy as np
 from os import system
+import os
 
 LOCAL_MQTT_HOST="mqtt_broker"
 LOCAL_MQTT_PORT=1883
 LOCAL_MQTT_TOPIC="homework3"
 
 def on_connect_local(client, userdata, flags, rc):
-        print("connected to local broker with rc: " + str(rc))
-        client.subscribe(LOCAL_MQTT_TOPIC)
+  print("connected to local broker with rc: " + str(rc))
+  client.subscribe(LOCAL_MQTT_TOPIC)
 	
 
 def on_message_local(client, userdata, msg):
   try:
-    i = int(msg.payload[0])   # get message number
-    png = msg.payload[1:]
+    i = 1 + len(os.listdir('/home/faces/'))
+    print(i)
+    if i > 10:
+      system('rm /home/faces/*.png')
+      i = 1
+    png = msg.payload
     print(str(i) + "th message received locally!")	    
     png_new = imdecode(np.fromstring(png, dtype=np.uint8),IMREAD_COLOR)
     imwrite('/home/faces/face_' + str(i) + '.png', png_new)
@@ -25,7 +30,8 @@ def on_message_local(client, userdata, msg):
   except:
     print("Unexpected error:", sys.exc_info()[0])
 
-
+print(os.getcwd())
+system('rm /home/faces/*.png')
 local_mqttclient = mqtt.Client()
 local_mqttclient.on_connect = on_connect_local
 local_mqttclient.connect(LOCAL_MQTT_HOST, LOCAL_MQTT_PORT, 60)
