@@ -40,7 +40,7 @@
 
     * Spin up the container and run `tx2_face_detector.py`
 
-        `sudo docker run --rm --privileged -e DISPLAY --name face_detector --network hw07 -v /home/zengm71/Documents/W251/michael_zeng_w251_hw/hw07/:/home/ -ti face_detector /bin/bash /home/tx2_run_face_detector.sh`
+        `sudo docker run --rm --privileged -e DISPLAY --name face_detector --network hw07 -v /home/zengm71/Documents/W251/michael_zeng_w251_hw/hw07/:/home/ -ti face_detector07 /bin/bash /home/tx2_run_face_detector.sh`
 
     * Note that in `tx2_face_detector.py` I added in a timeout of 10 seconds as well as a single digit counter to keep track of faces/pictures. These were used just so that I don't overwhelm the output with tons of images. Tests have been done with these two restrictions removed and it still works nicely. 
 
@@ -69,7 +69,7 @@
 
     * Spin up container and run `vsi_receiver.py`
 
-        `sudo docker run --rm --name mqtt_receiver --network hw03 -v ~/W251/HW/hw03/:/home/ -v ~/.s3cfg:/root/.s3cfg -ti mqtt_receiver /bin/bash /home/vsi_run_receiver.sh`
+        `sudo docker run --rm --name mqtt_receiver --network hw07 -v ~/michael_zeng_w251_hw/hw07/:/home/ -v ~/.s3cfg:/root/.s3cfg -ti mqtt_receiver /bin/bash /home/vsi_run_receiver.sh`
 
 4. Note on S3 buckets
 

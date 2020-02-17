@@ -20,7 +20,7 @@ def on_message_local(client, userdata, msg):
     png_new = imdecode(np.fromstring(png, dtype=np.uint8),IMREAD_COLOR)
     imwrite('/home/faces/face_' + str(i) + '.png', png_new)
     print(str(i) + "th message saved to png!")
-    system('s3cmd sync /home/faces/ s3://251hw03mz/')
+    system('s3cmd sync /home/faces/ s3://251hw07mz/')
     print(str(i) + "th message synced to s3!")
   except:
     print("Unexpected error:", sys.exc_info()[0])
