@@ -1,7 +1,7 @@
 # Homework 8: 
 
 # Submission
-## Part 1:
+## Part 1: Please see annotation at `/hw08/annotations/Archive.zip`
 1.	In the time allowed, how many images did you annotate?  
 I was able to finish all 384 images. 
 
@@ -14,6 +14,20 @@ From this experience, I'd say annotating large image data set by hand is quite f
 
 4.	Think about image augmentation?  How would augmentations such as flip, rotation, scale, cropping, and translation effect the annotations?
 Those augmentations definitely makes the annotations job harder. For example, I nearly missed the TIE fighter when it was shown sideways and looked like an oxtagon. 
+
+## Part 2: see `annotation.ipynb`
+1. Describe the following augmentations in your own words
+    * Flip: flip the image upside down, or sideways, or the other way around
+    * Rotation: rotate the image while pivoting around the central pixel
+    * Scale: zooming in or out on a portion of the image
+    * Crop: cropping out a portion of the image
+    * Translation: map the position of each picture element in an input image into a new position in an output image, where the dimensionality of the two images often is, but need not necessarily be, the same.
+    * Noise: adding white noise on top of the original image
+
+## Part 3
+1. Image annotations require the coordinates of the objects and their classes; in your option, what is needed for an audio annotation?
+
+    It needs the begnning and the ending time stamp in the audio file, as well as their classes. 
 
 # Original README
 
