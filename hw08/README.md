@@ -1,4 +1,22 @@
 # Homework 8: 
+
+# Submission
+## Part 1:
+1.	In the time allowed, how many images did you annotate?  
+I was able to finish all 384 images. 
+
+2.	Home many instances of the Millennium Falcon did you annotate?  How many TIE Fighters?
+There are 288 instances of TIE fighter, and 304 instances of the Millennium Falcon. 
+Please see the script in `count_annotations.py`. 
+
+3.	Based on this experience,  how would you handle the annotation of large image data set?
+From this experience, I'd say annotating large image data set by hand is quite formidable. We should do this with an algorithm. 
+
+4.	Think about image augmentation?  How would augmentations such as flip, rotation, scale, cropping, and translation effect the annotations?
+Those augmentations definitely makes the annotations job harder. For example, I nearly missed the TIE fighter when it was shown sideways and looked like an oxtagon. 
+
+# Original README
+
 ## Part 1: Image Annotation
 For this homework, you will be annotating the Millennium Falcon and TIE Fighters in images from Star Wars: The Force Awakens.  
 
