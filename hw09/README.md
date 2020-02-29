@@ -2,6 +2,9 @@
 
 # Submission
 
+* P100 create VM `ibmcloud sl vs create --datacenter=wdc07 --hostname=p100a --domain=W251-zengm71.cloud --image 2263543 --billing=hourly --network 1000 --key=1717878 --key=1545088 --flavor AC1_16X120X100  --san`, then modify the disk and mount it to `/data` as instructed. 
+
+* V100 `ibmcloud sl vs create --datacenter=wdc07 --hostname=v100a --domain=W251-zengm71.cloud --image 2263543 --billing=hourly --network 1000 --key=1717878 --key=1545088 --flavor AC2_16X120X100  --san`
 
 # Original README
 ## Please note that this homework is graded
