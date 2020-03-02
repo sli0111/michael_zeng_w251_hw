@@ -18,16 +18,78 @@
 
 ## Questions 
 * How long does it take to complete the training run? (hint: this session is on distributed training, so it will take a while)
+    
+    It took about 24 hours to stop at 40K steps on a pair of V100s. 
+
 * Do you think your model is fully trained? How can you tell?
+
+    It is not quite fully trained. The evaluation loss at 40K is 1.69, while the loss at 300K steps are below 1.6. 
+
 * Were you overfitting?
+
+    It is not obvious that it is overfitting, the training and val loss are tracking each other in the process of the training. 
+
 * Were your GPUs fully utilized?
+    
+    Yes, I can see both GPUs are at 100%, see snapshot below. 
+    ```
+    root@v100a:~# nvidia-smi dmon -s u
+    # gpu    sm   mem   enc   dec
+    # Idx     %     %     %     %
+        0   100     0     0     0
+        1   100     0     0     0
+        0    85    45     0     0
+        1    92    42     0     0
+        0   100     1     0     0
+        1   100     1     0     0
+        0   100    15     0     0
+        1   100     7     0     0
+        0   100     0     0     0
+        1   100     0     0     0
+    ```
 * Did you monitor network traffic (hint: apt install nmon ) ? Was network the bottleneck?
+
+    It is not obvious that network traffic is the bottleneck. 
+    
+    1. the GPUs are fully utilized already. We used fixed precision training, and barely fitted 256 obs in a batch. Therefore we know GPU is already at its limits. 
+    2. see snapshot below about from `nmon`, the Peak->Recv is not yet at 100%. 
+    ```
+    x Network I/O                       x
+    xI/F Name Recv=KB/s Trans=KB/s packin packout insize outsize Peak->Recv Trans                                                                                                     x
+    x      lo     0.0     0.0       0.0      0.0     0.0    0.0        0.0     0.0                                                                                                    x
+    x    eth1     0.1     0.2       1.5      0.5    48.0  326.0        1.7     4.9                                                                                                    x
+    x docker0     0.0     0.0       0.0      0.0     0.0    0.0        0.0     0.0                                                                                                    x
+    x    eth0 220269.9 213121.1    157152.1   9672.1  1435.3 22563.6    3429392.8 3315087.8   .8 
+    ```
 * Take a look at the plot of the learning rate and then check the config file. Can you explan this setting?
+
+    From the paper (https://arxiv.org/pdf/1706.03762.pdf), the learning rate is set as:
+    $lrate = d_model^.5\codt \min(step_num^{-0.5}, step_num\cdot warmup_steps^{-1.5})$. 
+    In the setup, $d_model$ is 512 and $warmup_steps$ is set to 8000. As a result, we see the learning rate go up until step 8000 and start to go lower and lower. 
+
 * How big was your training set (mb)? How many training lines did it contain?
+
+    There are 4,524,868 lines contained in the training set, which is about 600 mb. 
 * What are the files that a TF checkpoint is comprised of?
+
+    The files are:
+    * `val_loss=1.6943-step-40011.data-00000-of-00001`
+    * `val_loss=1.6943-step-40011.index`
+    * `val_loss=1.6943-step-40011.meta`
+    
+    the first file is the model. 
+
 * How big is your resulting model checkpoint (mb)?
+
+    The model is about 700 mb. 
+
 * Remember the definition of a "step". How long did an average step take?
-* How does that correlate with the observed network utilization between nodes?
+
+    A step is the process of going through a batch and perform a step of gradient decend. The log file updates every 100 steps which takes about 4 minutes. Therefore each step on average takes about 2 to 3 seconds. 
+
+* How does that correlate with the observed network utilization between nodes? 
+
+
 
 # Original README
 ## Please note that this homework is graded
