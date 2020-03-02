@@ -64,8 +64,8 @@
 * Take a look at the plot of the learning rate and then check the config file. Can you explan this setting?
 
     From the paper (https://arxiv.org/pdf/1706.03762.pdf), the learning rate is set as:
-    $lrate = d_model^.5\codt \min(step_num^{-0.5}, step_num\cdot warmup_steps^{-1.5})$. 
-    In the setup, $d_model$ is 512 and $warmup_steps$ is set to 8000. As a result, we see the learning rate go up until step 8000 and start to go lower and lower. 
+    $lrate = d\_model^.5\cdot \min(step\_num^{-0.5}, step\_num\cdot warmup\_steps^{-1.5})$. 
+    In the setup, $d\_model$ is 512 and $warmup\_steps$ is set to 8000. As a result, we see the learning rate go up until step 8000 and start to go lower and lower. 
 
 * How big was your training set (mb)? How many training lines did it contain?
 
