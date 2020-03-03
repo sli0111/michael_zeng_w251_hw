@@ -1,6 +1,7 @@
 # Homework 9: Distributed Training and Neural Machine Translation
 
 # Submission
+Please see training log in `nohup.out`. 
 
 ## Setup 
 * P100 create VM `ibmcloud sl vs create --datacenter=wdc07 --hostname=p100a --domain=W251-zengm71.cloud --image 2263543 --billing=hourly --network 1000 --key=1717878 --key=1545088 --flavor AC1_16X120X100  --san`, then modify the disk and mount it to `/data` as instructed. 
@@ -16,7 +17,17 @@
     
     `nohup mpirun --allow-run-as-root -n 4 -H 10.190.234.88:2,10.190.234.85:2 -bind-to none -map-by slot --mca btl_tcp_if_include eth0 -x NCCL_SOCKET_IFNAME=eth0 -x NCCL_DEBUG=INFO -x LD_LIBRARY_PATH python run.py --config_file=/data/transformer-base.py --use_horovod=True --mode=train_eval &`
 
+## Screenshots
+
+![Validation BLEU curve](mz_eval_bleu_score.png)
+![Validation BLEU curve](mz_eval_loss.png)
+![Validation BLEU curve](mz_global_step.png)
+![Validation BLEU curve](mz_learning_rate.png)
+![Validation BLEU curve](mz_loss_optimization.png)
+![Validation BLEU curve](mz_train_loss.png)
+
 ## Questions 
+
 * How long does it take to complete the training run? (hint: this session is on distributed training, so it will take a while)
     
     It took about 24 hours to stop at 40K steps on a pair of V100s. 
@@ -24,10 +35,11 @@
 * Do you think your model is fully trained? How can you tell?
 
     It is not quite fully trained. The evaluation loss at 40K is 1.69, while the loss at 300K steps are below 1.6. 
+    Also, when I look at the logs from `nohup.out`, the translations from the final evaluation at 40k steps are exactly accurate. Therefore, I think we still need a lot more training. 
 
 * Were you overfitting?
 
-    It is not obvious that it is overfitting, the training and val loss are tracking each other in the process of the training. 
+    It is not obvious that it is overfitting, the training and val loss are tracking each other in the process of the training. As of step 40k where I stopped, the train loss is 1.60 while the evaluation loss is at 1.63. It is natural that train loss will be smaller, but the difference I saw does not necessarily flag it as overfitting. 
 
 * Were your GPUs fully utilized?
     
@@ -64,12 +76,13 @@
 * Take a look at the plot of the learning rate and then check the config file. Can you explan this setting?
 
     From the paper (https://arxiv.org/pdf/1706.03762.pdf), the learning rate is set as:
-    $lrate = d\_model^.5\cdot \min(step\_num^{-0.5}, step\_num\cdot warmup\_steps^{-1.5})$. 
+    $$lrate = d\_model^.5\cdot \min(step\_num^{-0.5}, step\_num\cdot warmup\_steps^{-1.5})$$. 
     In the setup, $d\_model$ is 512 and $warmup\_steps$ is set to 8000. As a result, we see the learning rate go up until step 8000 and start to go lower and lower. 
 
 * How big was your training set (mb)? How many training lines did it contain?
 
-    There are 4,524,868 lines contained in the training set, which is about 600 mb. 
+    There are 4,524,868 lines contained in the training set (if you count both English and German the number doubles), which is about 700 mb. 
+
 * What are the files that a TF checkpoint is comprised of?
 
     The files are:
@@ -89,6 +102,7 @@
 
 * How does that correlate with the observed network utilization between nodes? 
 
+    The utilization goes up at the end of each step, when the gradients need to be passed between the nodes. 
 
 
 # Original README
