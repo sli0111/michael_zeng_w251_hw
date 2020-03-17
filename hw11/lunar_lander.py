@@ -10,6 +10,7 @@ from gym.utils import seeding
 
 from keras.models import Sequential
 from keras.layers import Dense
+from keras.layers.normalization import BatchNormalization
 
 # Rocket trajectory optimization is a classic topic in Optimal Control.
 #
@@ -407,8 +408,10 @@ def heuristic(env, s):
 
 def nnmodel(input_dim):
     model = Sequential()
-    model.add(Dense(32, input_dim=input_dim, activation='relu'))
-    model.add(Dense(16, activation='sigmoid'))
+    model.add(Dense(400, input_dim=input_dim, activation='relu'))
+    model.add(BatchNormalization())
+    model.add(Dense(200, activation='relu'))
+    model.add(BatchNormalization())
     model.add(Dense(1))
-    model.compile(loss='mean_squared_error', optimizer='adam', metrics=['accuracy'])
+    model.compile(loss='mean_squared_error', optimizer='adam', metrics=['mse'])
     return model

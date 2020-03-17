@@ -27,12 +27,14 @@ if __name__=="__main__":
     a = np.array([0.0,0.0])
     modelTrained = False
     model = nnmodel(10)
+    print(model.summary())
     tr = 0
     prev_r = 0
     training_thr = 3000
     total_itrs = 50000
     successful_steps = []
-
+    print("training_thr: ", training_thr)
+    print("total_itrs: ", total_itrs)
     while steps <= total_itrs:
         new_s, r, done, info = env.step(a)
         X_train.append(list(prev_s)+list(a))
@@ -43,8 +45,10 @@ if __name__=="__main__":
         if steps > training_thr and steps %1000 ==0:
             # re-train a model
             print("training model model")
+            print(np.array(X_train).shape)
+            print(max(y_train), "____", min(y_train))
             modelTrained = True
-            model.fit(np.array(X_train),np.array(y_train).reshape(len(y_train),1), epochs = 10, batch_size=20)
+            model.fit(np.array(X_train),np.array(y_train).reshape(len(y_train),1), epochs = 20, batch_size=100)
 
         if modelTrained:
             maxr = -1000
@@ -85,8 +89,9 @@ if __name__=="__main__":
         frame = env.render(mode='rgb_array')
         frames.append(frame)
         if steps >= training_thr and steps %1000 == 0:
-            fname = "/tmp/videos/frame"+str(steps)+".mp4"
-            skvideo.io.vwrite(fname, np.array(frames))
+            if steps == total_itrs:
+                fname = "/tmp/videos/frame"+str(steps)+".mp4"
+                skvideo.io.vwrite(fname, np.array(frames))
             del frames
             frames = []
 
