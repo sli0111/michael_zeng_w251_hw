@@ -36,7 +36,23 @@ List of MP4s:
 
 * `alter2_params_frame5000.mp4`
 
-	
+	```
+	model.fit(np.array(X_train),np.array(y_train).reshape(len(y_train),1), epochs = 20, batch_size=int(steps/50))
+	```
+	```
+	def nnmodel(input_dim):
+	    model = Sequential()
+	    model.add(Dense(128, input_dim=input_dim, activation='relu'))
+	    model.add(BatchNormalization())
+	    model.add(Dense(64, activation='relu'))
+	    model.add(BatchNormalization())
+	    model.add(Dense(32, activation='relu'))
+	    model.add(BatchNormalization())
+	    model.add(Dense(1))
+	    model.compile(loss='mean_squared_error', optimizer='adamax', metrics=['mse'])
+	    return model
+	```
+
 ## Original README
 In this homework, you will be training a Lunar Lander to land properly **using your Jetson TX2**. There is a video component to this file, so use a display or VNC.
 

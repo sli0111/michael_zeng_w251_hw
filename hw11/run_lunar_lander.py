@@ -48,7 +48,7 @@ if __name__=="__main__":
             print(np.array(X_train).shape)
             print(max(y_train), "____", min(y_train))
             modelTrained = True
-            model.fit(np.array(X_train),np.array(y_train).reshape(len(y_train),1), epochs = 20, batch_size=100)
+            model.fit(np.array(X_train),np.array(y_train).reshape(len(y_train),1), epochs = 20, batch_size=int(steps/50))
 
         if modelTrained:
             maxr = -1000
