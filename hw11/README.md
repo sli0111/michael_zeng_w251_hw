@@ -11,7 +11,10 @@ List of MP4s:
 
 	This is trained using the default setting to 50K steps
 
-* `alter1_params_frame5000.mp4`
+* `alter1_params_frame50000.mp4`
+	```
+	model.fit(np.array(X_train),np.array(y_train).reshape(len(y_train),1), epochs = 20, batch_size=100)
+	```
 
 	THis is trained with the following model with 20 epochs every time the model is fit
 
@@ -26,91 +29,14 @@ List of MP4s:
 	    model.compile(loss='mean_squared_error', optimizer='adam', metrics=['mse'])
 	    return model
 	```
-	```
-	Epoch 1/20
-	5001/5001 [==============================] - 7s 1ms/step - loss: 121.6063 - mse: 121.6063
-	Epoch 2/20
-	5001/5001 [==============================] - 6s 1ms/step - loss: 110.7641 - mse: 110.7641
-	Epoch 3/20
-	5001/5001 [==============================] - 7s 1ms/step - loss: 117.4439 - mse: 117.4439
-	Epoch 4/20
-	5001/5001 [==============================] - 7s 1ms/step - loss: 107.2806 - mse: 107.2807
-	Epoch 5/20
-	5001/5001 [==============================] - 6s 1ms/step - loss: 121.5430 - mse: 121.5431
-	Epoch 6/20
-	5001/5001 [==============================] - 6s 1ms/step - loss: 117.1547 - mse: 117.1547
-	Epoch 7/20
-	5001/5001 [==============================] - 6s 1ms/step - loss: 114.0194 - mse: 114.0193
-	Epoch 8/20
-	5001/5001 [==============================] - 6s 1ms/step - loss: 107.4531 - mse: 107.4531
-	Epoch 9/20
-	5001/5001 [==============================] - 6s 1ms/step - loss: 99.8654 - mse: 99.8654
-	Epoch 10/20
-	5001/5001 [==============================] - 7s 1ms/step - loss: 98.9434 - mse: 98.9434
-	```
-
-        After 5000 steps (4 training rounds * 20 epochs each), the loss (MSE) was sub 100. The changes I made were:
+	After 50000 steps, the loss (MSE) was around 80. The changes I made were:
 	* more epochs: it does look like the loss were decreasing shapely at 10th epoch, so I extended it to 20 since training time is not a big constraint here
 	* more neurons: increase the neurals so that the model handles more complex relationships
 	* batch normalization:
+
 * `alter2_params_frame5000.mp4`
 
-	```
-	def nnmodel(input_dim):
-	    model = Sequential()
-	    model.add(Dense(32, input_dim=input_dim, activation='relu'))
-	    # model.add(BatchNormalization())
-	    model.add(Dense(16, activation='relu'))
-	    # model.add(BatchNormalization())
-	    model.add(Dense(1))
-	    model.compile(loss='mean_squared_error', optimizer='adam', metrics=['mse'])
-	    return model
-	```
-	```
-	Epoch 1/20
-	5001/5001 [==============================] - 2s 333us/step - loss: 234.6138 - mse: 234.6138
-	Epoch 2/20
-	5001/5001 [==============================] - 2s 340us/step - loss: 233.1939 - mse: 233.1939
-	Epoch 3/20
-	5001/5001 [==============================] - 1s 297us/step - loss: 232.7472 - mse: 232.7473
-	Epoch 4/20
-	5001/5001 [==============================] - 2s 337us/step - loss: 231.9715 - mse: 231.9715
-	Epoch 5/20
-	5001/5001 [==============================] - 2s 304us/step - loss: 231.0795 - mse: 231.0795
-	Epoch 6/20
-	5001/5001 [==============================] - 2s 335us/step - loss: 231.0115 - mse: 231.0116
-	Epoch 7/20
-	5001/5001 [==============================] - 2s 348us/step - loss: 229.5556 - mse: 229.5556
-	Epoch 8/20
-	5001/5001 [==============================] - 2s 342us/step - loss: 228.8306 - mse: 228.8306
-	Epoch 9/20
-	5001/5001 [==============================] - 1s 259us/step - loss: 228.4502 - mse: 228.4502
-	Epoch 10/20
-	5001/5001 [==============================] - 1s 220us/step - loss: 228.2503 - mse: 228.2502
-	Epoch 11/20
-	5001/5001 [==============================] - 1s 228us/step - loss: 227.5574 - mse: 227.5574
-	Epoch 12/20
-	5001/5001 [==============================] - 1s 232us/step - loss: 227.5215 - mse: 227.5215
-	Epoch 13/20
-	5001/5001 [==============================] - 1s 274us/step - loss: 226.9811 - mse: 226.9810
-	Epoch 14/20
-	5001/5001 [==============================] - 1s 225us/step - loss: 226.2073 - mse: 226.2073
-	Epoch 15/20
-	5001/5001 [==============================] - 1s 241us/step - loss: 225.3914 - mse: 225.3914
-	Epoch 16/20
-	5001/5001 [==============================] - 2s 327us/step - loss: 225.1216 - mse: 225.1216
-	Epoch 17/20
-	5001/5001 [==============================] - 1s 287us/step - loss: 225.3621 - mse: 225.3621
-	Epoch 18/20
-	5001/5001 [==============================] - 2s 340us/step - loss: 224.8399 - mse: 224.8400
-	Epoch 19/20
-	5001/5001 [==============================] - 2s 322us/step - loss: 224.9844 - mse: 224.9844
-	Epoch 20/20
-	5001/5001 [==============================] - 1s 287us/step - loss: 224.0470 - mse: 224.0471
-	```
-	```
-	model.fit(np.array(X_train),np.array(y_train).reshape(len(y_train),1), epochs = 20, batch_size=50)
-	```
+	
 ## Original README
 In this homework, you will be training a Lunar Lander to land properly **using your Jetson TX2**. There is a video component to this file, so use a display or VNC.
 
