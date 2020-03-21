@@ -3,6 +3,7 @@
 ## Submission
 Run the script in docker. The following setup allows the edited script to run, as well as making use of the swap memory. 
 ```
+xhost +
 sudo docker run --rm --net=host --runtime nvidia --memory 7G --memory-swap 30G --memory-swappiness 50 -e DISPLAY=$DISPLAY -v /tmp/.X11-unix/:/tmp/.X11-unix:rw --privileged -v /data/videos:/tmp/videos -v "$(pwd)":/src -it lander python3 /src/run_lunar_lander.py
 ```
 
@@ -34,7 +35,7 @@ List of MP4s:
 	* more neurons: increase the neurals so that the model handles more complex relationships
 	* batch normalization:
 
-* `alter2_params_frame5000.mp4`
+* `alter2_params_frame50000.mp4`
 
 	```
 	model.fit(np.array(X_train),np.array(y_train).reshape(len(y_train),1), epochs = 20, batch_size=int(steps/50))
@@ -52,6 +53,23 @@ List of MP4s:
 	    model.compile(loss='mean_squared_error', optimizer='adamax', metrics=['mse'])
 	    return model
 	```
+* `alter3_params_frame50000.mp4`
+
+	```
+	model.fit(np.array(X_train),np.array(y_train).reshape(len(y_train),1), epochs = 20, batch_size=int(steps/50))
+	```
+	```
+	def nnmodel(input_dim):
+	    model = Sequential()
+	    model.add(Dense(128, input_dim=input_dim, init='lecun_uniform', activation='relu'))
+	    model.add(BatchNormalization())
+	    model.add(Dense(256, activation='relu', init='lecun_uniform'))
+	    model.add(BatchNormalization())
+	    model.add(Dense(1))
+	    model.compile(loss='mean_squared_error', optimizer='adamax', metrics=['mse'])
+	    return model
+	```
+
 
 ## Original README
 In this homework, you will be training a Lunar Lander to land properly **using your Jetson TX2**. There is a video component to this file, so use a display or VNC.
