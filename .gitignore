@@ -10,3 +10,7 @@ hw08/MIDS_HW8/
 hw08/audio-annotator/
 Hw09/best_models/*
 hw09/transformer-base-fp32.tar.gz
+hw11/alter1_params_frame5000.mp4
+hw11/alter2_params_frame5000.mp4
+hw11/alter2_params_frame50000.mp4
+

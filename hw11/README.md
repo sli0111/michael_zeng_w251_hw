@@ -7,12 +7,15 @@ xhost +
 sudo docker run --rm --net=host --runtime nvidia --memory 7G --memory-swap 30G --memory-swappiness 50 -e DISPLAY=$DISPLAY -v /tmp/.X11-unix/:/tmp/.X11-unix:rw --privileged -v /data/videos:/tmp/videos -v "$(pwd)":/src -it lander python3 /src/run_lunar_lander.py
 ```
 
-List of MP4s:
-* `default_parms_frame50000.mp4`
+List of MP4s: these files can be found in the github repo, as well as COS buckets. 
 
-	This is trained using the default setting to 50K steps
+* `default_parms_frame50000.mp4`: https://251hw11mz.s3.us-south.cloud-object-storage.appdomain.cloud/default_params_frame50000.mp4
 
-* `alter1_params_frame50000.mp4`
+
+	This is trained using the default setting to 50K steps. The final loss is about 130 and the lander does not seem well trained. 
+
+* `alter1_params_frame50000.mp4`: https://251hw11mz.s3.us-south.cloud-object-storage.appdomain.cloud/alter1_params_frame50000.mp4
+
 	```
 	model.fit(np.array(X_train),np.array(y_train).reshape(len(y_train),1), epochs = 20, batch_size=100)
 	```
@@ -31,29 +34,14 @@ List of MP4s:
 	    return model
 	```
 	After 50000 steps, the loss (MSE) was around 80. The changes I made were:
-	* more epochs: it does look like the loss were decreasing shapely at 10th epoch, so I extended it to 20 since training time is not a big constraint here
-	* more neurons: increase the neurals so that the model handles more complex relationships
-	* batch normalization:
+	* **more epochs**: it does look like the loss were still decreasing shapely at 10th epoch, so I extended it to 20 since training time is not a big constraint here
+	* **batch size**: the original batch size of 20 is simply too small to calculate a robust gradients on. Given the size of the our training data (with only 8 columns), having a bigger batch size is totally doable even with the memories that TX2 has. 
+	* **activation function**: I picked relu for activation function, since it is more robust to vanishing gradients. However, I don't think I saw significant improvement on this change. 
+	* **more neurons**: increase the neurals so that the model handles more complex relationships. However, I kept the origal depth of 3. It is a bit unclear to me the trade-offs between going wide vs going deep, my experience with playing with these is that going deep does not seem to help, yet a deeper network has more parameters to train for the same number of total neurons. Therefore, I kept the depth as it is.  
+	* **batch normalization**: this helps a lot in calculating the gradients, however it slows the training down a lot becuase it adds so many additional parameters. However, since we are not focusing on the speed of inference, I will adding batch normalization does more good than bad for sure. 
 
-* `alter2_params_frame50000.mp4`
+* `alter3_params_frame50000.mp4`: https://251hw11mz.s3.us-south.cloud-object-storage.appdomain.cloud/alter3_params_frame50000.mp4
 
-	```
-	model.fit(np.array(X_train),np.array(y_train).reshape(len(y_train),1), epochs = 20, batch_size=int(steps/50))
-	```
-	```
-	def nnmodel(input_dim):
-	    model = Sequential()
-	    model.add(Dense(128, input_dim=input_dim, activation='relu'))
-	    model.add(BatchNormalization())
-	    model.add(Dense(64, activation='relu'))
-	    model.add(BatchNormalization())
-	    model.add(Dense(32, activation='relu'))
-	    model.add(BatchNormalization())
-	    model.add(Dense(1))
-	    model.compile(loss='mean_squared_error', optimizer='adamax', metrics=['mse'])
-	    return model
-	```
-* `alter3_params_frame50000.mp4`
 
 	```
 	model.fit(np.array(X_train),np.array(y_train).reshape(len(y_train),1), epochs = 20, batch_size=int(steps/50))
@@ -69,6 +57,10 @@ List of MP4s:
 	    model.compile(loss='mean_squared_error', optimizer='adamax', metrics=['mse'])
 	    return model
 	```
+	This is the best model I have, the final loss (MSE) is around 58. And here are the changes I made:
+	* **optimizer** : I pondered upon the choice between Adam and Adamax a lot. The way I understand it is that adamax is a derivation from adam, which uses infinity norm of the gradients rather than the second norm. This supposed helps the algorithm when the model has sparse parameter updates, which I don't think it is the case here. In fact, I tried them both and didn't see one is obviously better than the other. As a result, I picked it here largely by chance.
+	* **neurons** : I picked the lower number of neurons because it helps reduce the number of paramters we need to train. The previous setup of 400 * 200 * 1 is just too slow for me. 
+	* **initialization** : I attribute the improvement in loss reduction to this part mostly. There is a lot of literature on the choice of initializer and the effect of a "lucky draw". Lecun uniform initializes the parameters with a uniform distribution where the range is inversely proportional to number of input units in the weight tensor. I also tried other intializers such xavier and xavier uniform. I found Lecun uniform to perform the best here. 
 
 
 ## Original README
