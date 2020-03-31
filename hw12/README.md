@@ -1,5 +1,46 @@
 # Homework: Part 1 - Installing GPFS FPO
 
+# Submission
+
+* VSI
+
+```
+ibmcloud sl vs create --datacenter=wdc07  --hostname=gpfs1 --domain=W251-zengm71.cloud --cpu=2 --memory=4 --os=CENTOS_7_64 --disk=25 --disk=100 --network 1000 --key=1545088 --san
+ibmcloud sl vs create --datacenter=wdc07  --hostname=gpfs2 --domain=W251-zengm71.cloud --cpu=2 --memory=4 --os=CENTOS_7_64 --disk=25 --disk=100 --network 1000 --key=1545088 --san
+ibmcloud sl vs create --datacenter=wdc07  --hostname=gpfs3 --domain=W251-zengm71.cloud --cpu=2 --memory=4 --os=CENTOS_7_64 --disk=25 --disk=100 --network 1000 --key=1545088 --san
+```
+`scp -i michael_zeng_ssh michael_zeng_ssh root@52.117.98.188:/root/.ssh/id_rsa` to copy SSH key over.
+`ssh-keygen -p` to remove the passphrase, otherwise it won't work. 
+* Ansers
+1. How much disk space is used after step 4?
+
+2. Did you parallelize the crawlers in step 4? If so, how?
+    ```
+    import os
+    import random
+    import shutil
+    import lazynlp
+    from pybloom import BloomFilter
+    import multiprocessing    
+    import glob
+    import time
+
+    def down_load_txt(x): 
+        lazynlp.download_pages(x, "/gpfs/gpfsfpo/down_load_reddit", timeout=30, default_skip=True, extensions=[], domains=[])
+
+    if __name__ == '__main__': 
+        start = time.time()
+        pool = multiprocessing.Pool() 
+        pool = multiprocessing.Pool(processes=40) 
+        inputs = glob.glob('/gpfs/gpfsfpo/reddit_urls/*.txt')
+        outputs = pool.map(down_load_txt, inputs) 
+        print(time.time() - start)
+```
+3. Describe the steps to de-duplicate the web pages you crawled.
+
+4. Submit the list of files you that your LazyNLP spiders crawled (ls -la).
+
+# Original README
 ## Overview
 
 These instructions are a subset of the official instructions linked to from here: [IBM Spectrum Scale Resources - GPFS](https://www.ibm.com/support/knowledgecenter/en/STXKQY_5.0.1/com.ibm.spectrum.scale.v5r01.doc/bl1ins_manuallyinstallingonlinux_packages.htm).
