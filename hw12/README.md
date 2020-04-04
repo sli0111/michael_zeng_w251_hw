@@ -14,11 +14,11 @@ ibmcloud sl vs create --datacenter=wdc07  --hostname=gpfs3 --domain=W251-zengm71
 `ssh-keygen -p` to remove the passphrase, otherwise it won't work. 
 * Ansers
 1. How much disk space is used after step 4?
-    I downloaded all three dataset and saw 23G in use. 
+    I downloaded all three dataset and saw 31G in use. 
     ```
     [root@gpfs1 download_reddit]# df -h .
     Filesystem      Size  Used Avail Use% Mounted on
-    gpfsfpo         300G   23G  277G   8% /gpfs/gpfsfpo
+    gpfsfpo         300G   31G  270G  11% /gpfs/gpfsfpo 
     ```
 2. Did you parallelize the crawlers in step 4? If so, how?
     Yes, there are two layers of parallelizations:
@@ -34,20 +34,20 @@ ibmcloud sl vs create --datacenter=wdc07  --hostname=gpfs3 --domain=W251-zengm71
 4. Submit the list of files you that your LazyNLP spiders crawled (ls -la).
     ```
     [root@gpfs3 gpfsfpo]# ls -la
-    total 874642
+    total 878865
     drwxr-xr-x. 9 root root    262144 Apr  4 00:56 .
     drwxr-xr-x. 4 root root      4096 Mar 31 18:09 ..
     -rw-rw-r--. 1 root root    181290 Feb 27  2019 aus_gut.urls
     -rw-r--r--. 1 root root     11721 Apr  4 00:53 aus_gut.urls.zip
     -rw-r--r--. 1 root root       565 Apr  4 00:16 dedup.py
     -rw-r--r--. 1 root root       116 Apr  4 00:17 devider.sh
-    drwxr-xr-x. 2 root root      4096 Apr  4 00:57 download_aus
+    drwxr-xr-x. 2 root root    262144 Apr  4 04:58 download_aus
     -rw-r--r--. 1 root root       524 Apr  4 00:16 downloader_reddit_001.py
     -rw-r--r--. 1 root root       525 Apr  1 00:49 downloader_reddit_002.py
     -rw-r--r--. 1 root root       525 Apr  1 00:50 downloader_reddit_003.py
     -rw-r--r--. 1 root root       553 Apr  4 00:51 downloader_US.py
-    drwxr-xr-x. 2 root root  67108864 Apr  4 00:57 download_reddit
-    drwxr-xr-x. 2 root root    131072 Apr  4 00:57 download_us
+    drwxr-xr-x. 2 root root  67108864 Apr  4 16:56 download_reddit
+    drwxr-xr-x. 2 root root   4194304 Apr  4 03:43 download_us
     drwxr-xr-x. 4 root root      4096 Mar 31 18:11 lazynlp
     drwxrwxr-x. 5 root root     16384 Mar 31 18:19 reddit_urls
     -rw-r--r--. 1 root root 824545924 Mar 31 18:16 reddit_urls.zip
