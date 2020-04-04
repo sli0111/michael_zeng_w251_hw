@@ -1,5 +1,7 @@
 import glob
 import lazynlp
+import os
+
 original_files = glob.glob('/gpfs/gpfsfpo/reddit_urls/*.txt')
 lazynlp.dedup_lines(original_files, "/gpfs/gpfsfpo/reddit_urls_deduped_temp/")
 dedup_files_t = glob.glob('/gpfs/gpfsfpo/reddit_urls_deduped_temp/*.txt')

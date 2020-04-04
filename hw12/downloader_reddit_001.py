@@ -14,7 +14,7 @@ if __name__ == '__main__':
     start = time.time()
     pool = multiprocessing.Pool() 
     pool = multiprocessing.Pool(processes=40) 
-    inputs = glob.glob('/gpfs/gpfsfpo/reddit_urls_deduped/dir_001/*.txt')
+    inputs = glob.glob('/gpfs/gpfsfpo/reddit_urls/dir_001/*.txt')
     outputs = pool.map(down_load_txt, inputs) 
     print(time.time() - start)
 

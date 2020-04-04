@@ -10,35 +10,55 @@ ibmcloud sl vs create --datacenter=wdc07  --hostname=gpfs2 --domain=W251-zengm71
 ibmcloud sl vs create --datacenter=wdc07  --hostname=gpfs3 --domain=W251-zengm71.cloud --cpu=2 --memory=4 --os=CENTOS_7_64 --disk=25 --disk=100 --network 1000 --key=1545088 --san
 ```
 `scp -i michael_zeng_ssh michael_zeng_ssh root@52.117.98.188:/root/.ssh/id_rsa` to copy SSH key over.
+`scp -i michael_zeng_ssh /Users/zengm71/Documents/Berkeley/W251/michael_zeng_w251_hw/hw12/downloader_reddit_002.py root@52.117.98.188:/gpfs/gpfsfpo/`
 `ssh-keygen -p` to remove the passphrase, otherwise it won't work. 
 * Ansers
 1. How much disk space is used after step 4?
-
-2. Did you parallelize the crawlers in step 4? If so, how?
+    I downloaded all three dataset and saw 23G in use. 
     ```
-    import os
-    import random
-    import shutil
-    import lazynlp
-    from pybloom import BloomFilter
-    import multiprocessing    
-    import glob
-    import time
-
-    def down_load_txt(x): 
-        lazynlp.download_pages(x, "/gpfs/gpfsfpo/down_load_reddit", timeout=30, default_skip=True, extensions=[], domains=[])
-
-    if __name__ == '__main__': 
-        start = time.time()
-        pool = multiprocessing.Pool() 
-        pool = multiprocessing.Pool(processes=40) 
-        inputs = glob.glob('/gpfs/gpfsfpo/reddit_urls/*.txt')
-        outputs = pool.map(down_load_txt, inputs) 
-        print(time.time() - start)
-```
+    [root@gpfs1 download_reddit]# df -h .
+    Filesystem      Size  Used Avail Use% Mounted on
+    gpfsfpo         300G   23G  277G   8% /gpfs/gpfsfpo
+    ```
+2. Did you parallelize the crawlers in step 4? If so, how?
+    Yes, there are two layers of parallelizations:
+    * across machines: `devider.sh` is run under `reddit_urls` so that the txt files containing the urls can be placed equally into three folders. `downloader_reddit_001.py` and such were run on each machine, each on an individual folder. 
+    * multiprocessing: every time `downloader_reddit_001.py` is run, 40 processes were kicked off simultaneously and each downloading one txt file
+    
+    For the US one, I first splited the file `us_gutenberg.urls` into 40 txt files by `split -d us_gutenberg.urls -n 40 us_url_folders/us_url_part- --additional-suffix=.txt`, then carried out similar steps, see `downloader_US.py`
 3. Describe the steps to de-duplicate the web pages you crawled.
+    There are two steps for de-duplications and they are coded in `dedup.py`:
+    * each url txt was processed by `lazynlp.dedup_lines` searching for duplicated urls within the files
+    * the first url txt file after step 1 was put in a separate folder. Then every url coming out of step 1 later, was du-deduped against all the exisiting urls in the folder using `lazynlp.dedup_lines_from_new_file`.
 
 4. Submit the list of files you that your LazyNLP spiders crawled (ls -la).
+    ```
+    [root@gpfs3 gpfsfpo]# ls -la
+    total 874642
+    drwxr-xr-x. 9 root root    262144 Apr  4 00:56 .
+    drwxr-xr-x. 4 root root      4096 Mar 31 18:09 ..
+    -rw-rw-r--. 1 root root    181290 Feb 27  2019 aus_gut.urls
+    -rw-r--r--. 1 root root     11721 Apr  4 00:53 aus_gut.urls.zip
+    -rw-r--r--. 1 root root       565 Apr  4 00:16 dedup.py
+    -rw-r--r--. 1 root root       116 Apr  4 00:17 devider.sh
+    drwxr-xr-x. 2 root root      4096 Apr  4 00:57 download_aus
+    -rw-r--r--. 1 root root       524 Apr  4 00:16 downloader_reddit_001.py
+    -rw-r--r--. 1 root root       525 Apr  1 00:49 downloader_reddit_002.py
+    -rw-r--r--. 1 root root       525 Apr  1 00:50 downloader_reddit_003.py
+    -rw-r--r--. 1 root root       553 Apr  4 00:51 downloader_US.py
+    drwxr-xr-x. 2 root root  67108864 Apr  4 00:57 download_reddit
+    drwxr-xr-x. 2 root root    131072 Apr  4 00:57 download_us
+    drwxr-xr-x. 4 root root      4096 Mar 31 18:11 lazynlp
+    drwxrwxr-x. 5 root root     16384 Mar 31 18:19 reddit_urls
+    -rw-r--r--. 1 root root 824545924 Mar 31 18:16 reddit_urls.zip
+    dr-xr-xr-x. 2 root root      8192 Dec 31  1969 .snapshots
+    -rw-rw-r--. 1 root root   3023162 Feb 28  2019 us_gutenberg.urls
+    -rw-r--r--. 1 root root    313831 Apr  4 00:17 us_gutenberg.urls.zip
+    drwxr-xr-x. 2 root root      4096 Apr  4 00:44 us_url_folders
+    drwxrwx---. 2 root root      4096 Mar 31 18:14 wikitext-103
+    ```
+    The folders `download_aus`, `download_reddit` and `download_us` are the three datasets respectively. 
+
 
 # Original README
 ## Overview
