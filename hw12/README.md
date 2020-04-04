@@ -12,7 +12,8 @@ ibmcloud sl vs create --datacenter=wdc07  --hostname=gpfs3 --domain=W251-zengm71
 `scp -i michael_zeng_ssh michael_zeng_ssh root@52.117.98.188:/root/.ssh/id_rsa` to copy SSH key over.
 `scp -i michael_zeng_ssh /Users/zengm71/Documents/Berkeley/W251/michael_zeng_w251_hw/hw12/downloader_reddit_002.py root@52.117.98.188:/gpfs/gpfsfpo/`
 `ssh-keygen -p` to remove the passphrase, otherwise it won't work. 
-* Ansers
+
+## Answers
 1. How much disk space is used after step 4?
     I downloaded all three dataset and saw 31G in use. 
     ```
