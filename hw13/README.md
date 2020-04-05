@@ -29,6 +29,7 @@ We find that Dusty's repo has been one of the best places to find cool examples 
     ```
 
 * Could you increase the batch size? Why? How long did the training take you? 
+    
     Yes, the default is 8 and I tried increase it to 64. The TX2 still has more memory left, so I could increase this further if I want to. This time the taining is faster, 250 sec/epoch vs 350 sec/epoch before. 35 epochs took about 2 and half hours. 
 
 Please save your trained model, we'll use it for the lab.
