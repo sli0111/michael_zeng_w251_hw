@@ -5,14 +5,14 @@ Please see notebook `gym_mz.ipynb` with my edits. I changed the size of the netw
 * Model
 ```
 # Init model
-        self.model = Sequential()
-        # the model takes four inputs as the state (cart position, velocity, stick angle, velocity at tip)
-        # https://github.com/openai/gym/wiki/CartPole-v0
-        self.model.add(Dense(128, input_dim=4, activation='elu'))
-        self.model.add(Dense(512, activation='elu'))
-        # model outputs two numbers - cumulative rewards for two available actions 
-        self.model.add(Dense(2, activation='linear'))
-        self.model.compile(loss='mse', optimizer=Adam(lr=self.alpha, decay=self.alpha_decay))
+self.model = Sequential()
+# the model takes four inputs as the state (cart position, velocity, stick angle, velocity at tip)
+# https://github.com/openai/gym/wiki/CartPole-v0
+self.model.add(Dense(128, input_dim=4, activation='elu'))
+self.model.add(Dense(512, activation='elu'))
+# model outputs two numbers - cumulative rewards for two available actions 
+self.model.add(Dense(2, activation='linear'))
+self.model.compile(loss='mse', optimizer=Adam(lr=self.alpha, decay=self.alpha_decay))
 ```
 
 * Log
