@@ -28,13 +28,19 @@ Ran 649 episodes. Solved after 549 trials ✔
 ```
 
 * Note: there is a bug in `display_animation`. I had to edit `/usr/local/lib/python3.6/dist-packages/matplotlib/animation.py`  
-from 
-`399         out = TextIOWrapper(BytesIO(out)).read()`
-`400         err = TextIOWrapper(BytesIO(err)).read()`
-to 
-`399         out = TextIOWrapper(BytesIO(out.encode('utf-8'))).read()`
-`400         err = TextIOWrapper(BytesIO(err.encode('utf-8'))).read()`
-for it to work. 
+ from 
+
+ `399         out = TextIOWrapper(BytesIO(out)).read()`
+
+ `400         err = TextIOWrapper(BytesIO(err)).read()`
+
+ to 
+
+ `399         out = TextIOWrapper(BytesIO(out.encode('utf-8'))).read()`
+
+ `400         err = TextIOWrapper(BytesIO(err.encode('utf-8'))).read()`
+
+ for it to work. 
 
 
 # Original Readme
